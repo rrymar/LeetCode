@@ -1,5 +1,10 @@
-﻿using FluentAssertions;
+﻿using System.Collections.Generic;
+using FluentAssertions;
 using Xunit;
+// LeetCode contract issue
+// ReSharper disable InconsistentNaming
+// ReSharper disable FieldCanBeMadeReadOnly.Global
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace LeetCode
 {
@@ -12,6 +17,19 @@ namespace LeetCode
         {
             this.val = val;
             this.next = next;
+        }
+
+        public int[] ToIntArray()
+        {
+            var list = new List<int>();
+            var current = this;
+            do
+            {
+                list.Add(current.val);
+                current = current.next;
+
+            } while (current != null);
+            return list.ToArray();
         }
 
         public static ListNode Create(int[] numbers)
@@ -32,6 +50,14 @@ namespace LeetCode
 
     public class ListNodeTests
     {
+        [Fact]
+        public void IsShouldReturnArray()
+        {
+            var first = ListNode.Create(new[] {1, 2, 3});
+            var result = first.ToIntArray();
+            result.Should().Equal(1, 2, 3);
+        }
+
         [Fact]
         public void IsShouldCreateList()
         {
