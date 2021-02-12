@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace LeetCode.MinFallingPathSum
@@ -9,62 +7,42 @@ namespace LeetCode.MinFallingPathSum
     {
         public int MinFallingPathSum(int[][] matrix)
         {
-            if (matrix.Length == 1) return matrix[0].Min();
+            var rows = matrix.Length;
+            var cols = matrix[0].Length;
 
-            var min = int.MaxValue;
+            if (rows == 1)
+                return matrix[0].Min();
 
-            var xSize = matrix[0].Length;
-            for (int x = 0; x < xSize; x++)
+            if (cols == 1)
+                return matrix.SelectMany(e => e).Sum();
+
+            for (var y = 1; y < rows; y++)
             {
-                var nodes = new Dictionary<int, HashSet<int>>();
-                nodes.Add(x, new HashSet<int>(new[] {matrix[0][x]}));
-
-                for (int y = 1; y < matrix.Length; y++)
+                for (var x = 0; x < cols; x++)
                 {
-                    var newNodes = new Dictionary<int, HashSet<int>>();
-                    foreach (var nodeX in nodes.Keys.ToList())
+                    if (x == 0)
                     {
-                        var prevRowValue = nodes[nodeX];
-
-                        var current = matrix[y][nodeX];
-                        var value = prevRowValue.Select(e => e + current).ToHashSet();
-                        if (!newNodes.ContainsKey(nodeX))
-                            newNodes.Add(nodeX, value);
-                        else
-                            newNodes[nodeX].UnionWith(value);
-
-                        var nextX = nodeX + 1;
-                        if (nextX < xSize)
-                        {
-                            current = matrix[y][nextX];
-                            var nextValue = prevRowValue.Select(e => e + current).ToHashSet();
-                            if (!newNodes.ContainsKey(nextX))
-                                newNodes.Add(nextX, nextValue);
-                            else
-                                newNodes[nextX].UnionWith(nextValue);
-                        }
-
-                        var prevX = nodeX - 1;
-                        if (prevX >= 0)
-                        {
-                            current = matrix[y][prevX];
-                            var prevValue = prevRowValue.Select(e => e + current).ToHashSet();
-                            if (!newNodes.ContainsKey(prevX))
-                                newNodes.Add(prevX, prevValue);
-                            else
-                                newNodes[prevX].UnionWith(prevValue);
-                        }
+                        var middle = matrix[y - 1][x];
+                        var right = matrix[y - 1][x + 1];
+                        matrix[y][x] += Math.Min(middle, right);
                     }
-
-                    nodes = newNodes;
+                    else if (x == cols - 1)
+                    {
+                        var left = matrix[y - 1][x - 1];
+                        var middle = matrix[y - 1][x];
+                        matrix[y][x] += Math.Min(left, middle);
+                    }
+                    else
+                    {
+                        var left = matrix[y - 1][x - 1];
+                        var middle = matrix[y - 1][x];
+                        var right = matrix[y - 1][x + 1];
+                        matrix[y][x] += Math.Min(Math.Min(left, middle), right);
+                    }
                 }
-
-                var currentMin = nodes.SelectMany(e=>e.Value).Min(e => e);
-
-                if (currentMin < min) min = currentMin;
             }
 
-            return min;
+            return matrix[rows - 1].Min();
         }
     }
 }
