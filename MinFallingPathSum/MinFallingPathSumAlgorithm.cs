@@ -3,6 +3,9 @@ using System.Linq;
 
 namespace LeetCode.MinFallingPathSum
 {
+    /// <summary>
+    /// https://leetcode.com/problems/minimum-falling-path-sum/
+    /// </summary>
     public class MinFallingPathSumAlgorithm
     {
         public int MinFallingPathSum(int[][] matrix)
