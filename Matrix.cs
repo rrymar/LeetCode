@@ -9,10 +9,7 @@ namespace LeetCode
         public static int[][] Parse(string matrixString)
         {
             var trimmed = matrixString.Substring(1, matrixString.Length - 2);
-            var rows = trimmed.Split("],[").Select(e => e.Trim('[', ']'));
-
-            return rows.Select(e => e.Split(',').Select(int.Parse).ToArray())
-                .ToArray();
+            return trimmed.Split("],[").Select(IntArray.Parse).ToArray();
         }
     }
 
