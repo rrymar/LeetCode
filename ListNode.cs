@@ -32,6 +32,17 @@ namespace LeetCode
             return list.ToArray();
         }
 
+        public string ToLeetCodeString()
+        {
+            return ToIntArray().ToLeetCodeString();
+        }
+
+        public static ListNode Parse(string str)
+        {
+            var array = IntArray.Parse(str);
+            return Create(array);
+        }
+
         public static ListNode Create(int[] numbers)
         {
             if (numbers.Length == 0) return null;

@@ -18,7 +18,7 @@
                 if (nums[middle] == target) return middle;
 
                 if (nums[middle] > target)
-                    max =  middle - 1;
+                    max = middle - 1;
                 else
                     min = middle + 1;
             }
