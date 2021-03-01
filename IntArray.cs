@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using FluentAssertions;
 using Xunit;
 
@@ -17,6 +18,11 @@ namespace LeetCode
         public static string ToLeetCodeString(this int[] array)
         {
             return $"[{string.Join(Separator, array)}]";
+        }
+        
+        public static string ToLeetCodeString(this IList<int> list)
+        {
+            return list.ToArray().ToLeetCodeString();
         }
     }
 
