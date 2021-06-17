@@ -1,52 +1,49 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace LeetCode.MaxLevelSumBinaryTree
 {
     /// <summary>
-    /// Ruslan's Interview Task
+    /// https://leetcode.com/problems/maximum-level-sum-of-a-binary-tree/submissions/
     /// </summary>
     public class MaxLevelSumBinaryTreeAlgorithm
     {
         public int MaxLevelSum(TreeNode root)
         {
             var maxSum = root.val;
-            var maxSumLevel = 1;
-            var currentLevel = 1;
+            var maxSumLevelIndex = 0;
 
-            var currentLevelNodes = new List<TreeNode>(new[] {root});
+            var queue = new Queue<TreeNode>();
+            queue.Enqueue(root);
 
-            while (currentLevelNodes.Count > 0)
+            var currentLevelIndex = 0;
+            var currentSum = 0;
+
+            while (queue.Count > 0)
             {
-                var nextLevelNodes = new List<TreeNode>(currentLevelNodes.Count * 2);
-                var currentSum = 0;
-
-                foreach (var node in currentLevelNodes)
+                var levelSize = queue.Count;
+                for (var i = 0; i < levelSize; i++)
                 {
+                    var node = queue.Dequeue();
+                    currentSum += node.val;
+
                     if (node.left != null)
-                    {
-                        currentSum += node.left.val;
-                        nextLevelNodes.Add(node.left);
-                    }
-
+                        queue.Enqueue(node.left);
                     if (node.right != null)
-                    {
-                        currentSum += node.right.val;
-                        nextLevelNodes.Add(node.right);
-                    }
+                        queue.Enqueue(node.right);
                 }
 
-                currentLevel++;
-
-                if (currentSum > maxSum && nextLevelNodes.Count > 0)
+                if (currentSum > maxSum)
                 {
-                    maxSumLevel = currentLevel;
                     maxSum = currentSum;
+                    maxSumLevelIndex = currentLevelIndex;
                 }
 
-                currentLevelNodes = nextLevelNodes;
+                currentLevelIndex++;
+                currentSum = 0;
             }
 
-            return maxSumLevel;
+            return maxSumLevelIndex + 1;
         }
     }
 }

@@ -25,12 +25,12 @@ namespace LeetCode
 
             var values = str.Trim('[').Trim(']').Split(",");
 
-            using var numbers = values.Select(e => e != "null" ? (int?)int.Parse(e) : null)
+            using var numbers = values.Select(e => e != "null" ? (int?) int.Parse(e) : null)
                 .GetEnumerator();
-            
+
             if (!numbers.MoveNext() || numbers.Current == null) return null;
             var root = new TreeNode {val = numbers.Current.Value};
-            
+
             var currentLevelNodes = new List<TreeNode>(new[] {root});
             do
             {
@@ -49,6 +49,7 @@ namespace LeetCode
                         nextLevelNodes.Add(node.right);
                     }
                 }
+
                 currentLevelNodes = nextLevelNodes;
             } while (currentLevelNodes.Count != 0);
 
@@ -80,6 +81,16 @@ namespace LeetCode
         }
 
         [Fact]
+        public void ItParseTreeNullCase()
+        {
+            const string str = "[1,7,0,7,-8,null,null,-1,-43,-2,-90]";
+            var tree = TreeNode.Parse(str);
+            
+            tree.left.right.left.val.Should().Be(-2);
+            tree.left.right.right.val.Should().Be(-90);
+        }
+
+        [Fact]
         public void ItParseTreeComplexCase()
         {
             const string str = "[989,null,10250,98693,-89388,null,null,null,-32127]";
@@ -93,7 +104,6 @@ namespace LeetCode
             tree.right.left.right.Should().BeNull();
             tree.right.right.left.Should().BeNull();
             tree.right.right.right.val.Should().Be(-32127);
-
         }
     }
 }
