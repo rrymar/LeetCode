@@ -27,7 +27,7 @@ namespace LeetCode
 
             using var numbers = values.Select(e => e != "null" ? (int?)int.Parse(e) : null)
                 .GetEnumerator();
-            //var levelsCount = Math.Log2(numbers.Count - 1);
+            
             if (!numbers.MoveNext() || numbers.Current == null) return null;
             var root = new TreeNode {val = numbers.Current.Value};
             
