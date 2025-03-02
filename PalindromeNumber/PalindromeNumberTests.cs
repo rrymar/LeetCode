@@ -1,5 +1,4 @@
 ﻿using FluentAssertions;
-using LeetCode.LongestSubstring;
 using Xunit;
 
 namespace LeetCode.PalindromeNumber
